@@ -121,12 +121,12 @@ participant Client Module
 participant eMMC HAL
 participant Vendor Software
 Client Module ->>eMMC HAL: CcspHalEmmcGetHealthInfo()
-eMMC HAL->>Vendor Software:
-Vendor Software ->>eMMC HAL:
+eMMC HAL->>Vendor Software: 
+Vendor Software ->>eMMC HAL: 
 eMMC HAL->>Client Module: return
 
 Client Module ->>eMMC HAL: CcspHalEmmcGetDeviceInfo()
-eMMC HAL->>Vendor Software:
-Vendor Software ->>eMMC HAL:
+eMMC HAL->>Vendor Software: 
+Vendor Software ->>eMMC HAL: 
 eMMC HAL->>Client Module: return
 ```
