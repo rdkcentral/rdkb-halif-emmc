@@ -56,7 +56,7 @@
 
 /* Structs & Enums */
 /**
- * @enum eSTMGRReturns
+ * @enum _stmgr_ReturnCode
  *
  * @brief List of ReturnCodes for EMMC API's Fetch Operation.
  */
@@ -69,7 +69,7 @@ typedef enum _stmgr_ReturnCode {
 } eSTMGRReturns;
 
 /**
- * @enum eSTMGRDeviceType
+ * @enum _stmgr_DeviceType
  *
  * @brief List of DeviceTypes supported.
  */
@@ -84,7 +84,7 @@ typedef enum _stmgr_DeviceType {
 } eSTMGRDeviceType;
 
 /**
- * @enum eSTMGRDeviceStatus
+ * @enum _stmgr_DeviceStatus
  *
  * @brief DeviceStatus List.
  */
@@ -100,7 +100,7 @@ typedef enum _stmgr_DeviceStatus {
 } eSTMGRDeviceStatus;
 
 /**
- * @enum eSTMGREvents
+ * @enum _stmgr_events
  *
  * @brief Event Types List.
  */
@@ -275,6 +275,14 @@ typedef struct _stmgr_CallBackData{
 //typedef void (*fnSTMGR_EventCallback)(eSTMGREventMessage*);
 
 // HAL Functions
+
+/*
+ * TODO:
+ *
+ * 1. Extend the return codes by listing out the possible reasons of failure, to improve the interface in the future.
+ *    This was reported during the review for header file migration to opensource github.
+ *
+ */
 
 /**
  * @addtogroup EMMC_HAL_APIS

@@ -1,33 +1,28 @@
 # eMMC HAL Documentation
 
-# Version and Version History
-
-
-1.0.0 Initial Revision covers existing eMMC HAL implementation.
-
 ## Acronyms
 
 - `HAL` \- Hardware Abstraction Layer
 - `RDK-B` \- Reference Design Kit for Broadband Devices
 - `OEM` \- Original Equipment Manufacture
 
-# Description
+## Description
 The diagram below describes a high-level software architecture of the eMMC HAL module stack.
 
 ![eMMC HAL Architecture Diag](images/eMMC_HAL_Architecture.png)
 
 eMMC HAL is an abstraction layer, implemented to interact with linux device drivers of eMMC for getting health and device informations. This HAL layer is intended to be a common HAL,should be usable by any Ccspcomponents or Processes.
 
-# Component Runtime Execution Requirements
+## Component Runtime Execution Requirements
 
-## Initialization and Startup
+### Initialization and Startup
 
 RDK eMMC HAL client module is expected to call the below corresponding API at runtime whenever Health and Device information are needed. The below API's are not called on bootup.
 
-- CcspHalEmmcGetHealthInfo
-- CcspHalEmmcGetDeviceInfo
+- `CcspHalEmmcGetHealthInfo`
+- `CcspHalEmmcGetDeviceInfo`
 
-It is upto the 3rd party vendors to handle it appropriately to meet operational requirements. Failure to meet these requirements will likely result in undefined and unexpected behaviour.
+Third party vendors will implement appropriately to meet operational requirements. This interface is expected to block if the hardware is not ready.
 
 ## Theory of operation
 
@@ -35,22 +30,31 @@ eMMC health and device information will be populated on device globally. We need
 
 ## Threading Model
 
-eMMC HAL is not thread safe, any module which is invoking the eMMC HAL api should ensure calls are made in a thread safe manner.
+eMMC HAL is not thread safe.
 
-Different 3rd party vendors allowed to create internal threads to meet the operational requirements. In this case 3rd party implementations
-should be responsible to synchronize between the calls, events and cleanup the thread.
+Any module which is invoking the eMMC HAL api should ensure calls are made in a thread safe manner.
+
+Vendors can create internal threads/events to meet their operation requirements. These should be responsible to synchronize between the calls, events and cleaned up on closure.
+
+## Process Model
+
+All API's are expected to be called from multiple process.
 
 ## Memory Model
 
 eMMC HAL client module is responsible to allocate and deallocate memory for necessary API's to store information as specified in API Documentation.
 Different 3rd party vendors allowed to allocate memory for internal operational requirements. In this case 3rd party implementations should be responsible to deallocate internally.
 
+TODO:
+State a footprint requirement. Example: This should not exceed XXXX KB.
+
 ## Power Management Requirements
 
 The eMMC HAL is not involved in any of the power management operation. Any power management state transitions MUST not affect the operation of the eMMC HAL.
 
 ## Asynchronous Notification Model
-None
+
+There are no asynchronous notifications.
 
 ## Blocking calls
 Please see the blocking calls used in eMMC HAL which are static functions.
@@ -75,7 +79,13 @@ Following non functional requirement should be supported by the eMMC HAL compone
 
 ## Logging and debugging requirements
 
-eMMC HAL component should log all the error and critical informative messages which helps to debug/triage the issues and understand the functional flow of the system.
+eMMC HAL component should log all the error and critical informative messages, preferably using syslog, printf which helps to debug/triage the issues and understand the functional flow of the system.
+
+The logging should be consistent across all HAL components.
+
+If the vendor is going to log then it has to be logged in `xxx_vendor_hal.log` file name which can be placed in `/rdklogs/logs/` or `/var/tmp/` directory.
+
+Logging should be defined with log levels as per Linux standard logging.
 
 ## Memory and performance requirements
 
@@ -83,19 +93,21 @@ Make sure eMMC HAL is not contributing more to memory and CPU utilization while 
 
 ## Quality Control
 
-eMMC HAL implementation should pass Coverity, Black duck scan, valgrind checks without any issue. There should not be any memory leaks/corruption introduced by HAL and underneath 3rd party software implementation.
+eMMC HAL implementation should pass checks using any third party tools like `Coverity`, `Black duck`, `Valgrind` etc. without any issue to ensure quality.
 
 ## Licensing
 
-eMMC HAL implementation is expected to released under the Apache License.
+eMMC HAL implementation is expected to released under the Apache License 2.0
 
 ## Build Requirements
 
-eMMC HAL source code should be build under Linux Yocto environment and should be delivered as a static library libhal_emmc.
+eMMC HAL source code should be able to be built under Linux Yocto environment and should be delivered as a static library `libhal_emmc`.
 
 ## Variability Management
 
-Any new API introduced should be implemented by all the 3rd party module and RDK generic code should be compatible with specific version of eMMC HAL software
+Changes to the interface will be controlled by versioning, vendors will be expected to implement to a fixed version of the interface, and based on SLA agreements move to later versions as demand requires.
+
+Each API interface will be versioned using [Semantic Versioning 2.0.0](https://semver.org/), the vendor code will comply with a specific version of the interface.
 
 ## eMMC HAL or Product Customization
 
@@ -103,17 +115,15 @@ None
 
 ## Interface API Documentation
 
-All HAL function prototypes and datatype definitions are available in ccsp_hal_emmc.h file.
-     1. Components/Process must include ccsp_hal_emmc.h to make use of platform hal capabilities.
-     2. Components/Process should add linker dependency for libhal_emmc.
+All HAL function prototypes and datatype definitions are available in `ccsp_hal_emmc.h` file.
+     1. Components/Process must include `ccsp_hal_emmc.h` to make use of platform hal capabilities.
+     2. Components/Process should add linker dependency for `libhal_emmc`.
 
 ## Theory of operation and key concepts
 
 Covered as per "Description" sections in the API documentation.
 
-### UML Diagrams
-
-#### Sequence Diagram
+## Sequence Diagram
 
 ```mermaid
 sequenceDiagram
