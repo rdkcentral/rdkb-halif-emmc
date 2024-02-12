@@ -22,7 +22,7 @@ RDK eMMC HAL client module is expected to call the below corresponding API at ru
 - `CcspHalEmmcGetHealthInfo`
 - `CcspHalEmmcGetDeviceInfo`
 
-Third party vendors will implement appropriately to meet operational requirements. This interface is expected to block if the hardware is not ready.
+This interface is expected to block if the hardware is not ready.
 
 ## Theory of operation
 
@@ -30,7 +30,7 @@ eMMC health and device information will be populated on device globally. We need
 
 ## Threading Model
 
-eMMC HAL is not thread safe.
+The interface is not required to be thread-safe.
 
 Any module which is invoking the eMMC HAL api should ensure calls are made in a thread safe manner.
 
@@ -42,15 +42,15 @@ All API's are expected to be called from multiple process.
 
 ## Memory Model
 
-eMMC HAL client module is responsible to allocate and deallocate memory for necessary API's to store information as specified in API Documentation.
-Different 3rd party vendors allowed to allocate memory for internal operational requirements. In this case 3rd party implementations should be responsible to deallocate internally.
+eMMC HAL is responsible to allocate and deallocate memory for necessary API's to store information as specified in API Documentation.
 
-TODO:
-State a footprint requirement. Example: This should not exceed XXXX KB.
+Third-party vendors are required to allocate memory to meet their operational needs. In doing so, the vendor should also ensure they execute internal deallocation within their implementation.
+
+TODO: State a footprint requirement. Example: This should not exceed XXXX KB.
 
 ## Power Management Requirements
 
-The eMMC HAL is not involved in any of the power management operation. Any power management state transitions MUST not affect the operation of the eMMC HAL.
+The eMMC HAL is not involved in any of the power management operation.
 
 ## Asynchronous Notification Model
 
@@ -71,7 +71,7 @@ All the eMMC HAL API's should return error synchronously as a return argument. H
 
 ## Persistence Model
 
-There is no requirement for HAL to persist any setting information. Application/Client is responsible to persist any settings related to their implementation.
+There is no requirement for HAL to persist any setting information. The caller is responsible to persist any settings related to their implementation.
 
 # Nonfunctional requirements
 
@@ -101,11 +101,11 @@ eMMC HAL implementation is expected to released under the Apache License 2.0
 
 ## Build Requirements
 
-eMMC HAL source code should be able to be built under Linux Yocto environment and should be delivered as a static library `libhal_emmc`.
+eMMC HAL source code should be capable of being built under Linux Yocto environment and should be delivered as a static library `libhal_emmc`.
 
 ## Variability Management
 
-Changes to the interface will be controlled by versioning, vendors will be expected to implement to a fixed version of the interface, and based on SLA agreements move to later versions as demand requires.
+The role of adjusting the interface, guided by versioning, rests solely within architecture requirements. Thereafter, vendors are obliged to align their implementation with a designated version of the interface. As per Service Level Agreement (SLA) terms, they may transition to newer versions based on demand needs.
 
 Each API interface will be versioned using [Semantic Versioning 2.0.0](https://semver.org/), the vendor code will comply with a specific version of the interface.
 
