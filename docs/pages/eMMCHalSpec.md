@@ -17,7 +17,7 @@ eMMC HAL is an abstraction layer, implemented to interact with linux device driv
 
 ### Initialization and Startup
 
-RDK eMMC HAL client module is expected to call the below corresponding API at runtime whenever Health and Device information are needed. The below API's are not called on bootup.
+RDK eMMC HAL client module is expected to call the below corresponding API at runtime whenever Health and Device information are needed. The following API's are guaranteed not to be called during system bootup:
 
 - `CcspHalEmmcGetHealthInfo`
 - `CcspHalEmmcGetDeviceInfo`
@@ -67,7 +67,7 @@ Please see the blocking calls used in eMMC HAL which are static functions.
 
 ## Internal Error Handling
 
-All the eMMC HAL API's should return error synchronously as a return argument. HAL is responsible to handle system errors(e.g. out of memory) internally.
+All HAL APIs are designed to return all errors synchronously as part of their return arguments. The responsibility to manage system errors, such as memory shortages, lies internally with the caller.
 
 ## Persistence Model
 
@@ -79,11 +79,11 @@ Following non functional requirement should be supported by the eMMC HAL compone
 
 ## Logging and debugging requirements
 
-eMMC HAL component should log all the error and critical informative messages, preferably using syslog, printf which helps to debug/triage the issues and understand the functional flow of the system.
+The component is should log all the error and critical informative messages which helps to debug/triage the issues and understand the functional flow of the system.
 
-The logging should be consistent across all HAL components.
+The logging should be consistence across all HAL components.
 
-If the vendor is going to log then it has to be logged in `xxx_vendor_hal.log` file name which can be placed in `/rdklogs/logs/` or `/var/tmp/` directory.
+If the vendor is going to log then it has to be logged in `xxx_vendor_hal.log` file name.
 
 Logging should be defined with log levels as per Linux standard logging.
 
@@ -93,7 +93,7 @@ Make sure eMMC HAL is not contributing more to memory and CPU utilization while 
 
 ## Quality Control
 
-eMMC HAL implementation should pass checks using any third party tools like `Coverity`, `Black duck`, `Valgrind` etc. without any issue to ensure quality.
+To maintain software quality, it is recommended that the Firmware Management HAL implementation is verified without any errors using third-party tools such as `Coverity`, `Black Duck`, `Valgrind`, etc.
 
 ## Licensing
 
@@ -127,16 +127,16 @@ Covered as per "Description" sections in the API documentation.
 
 ```mermaid
 sequenceDiagram
-participant Client Module
+participant Caller
 participant eMMC HAL
-participant Vendor Software
-Client Module ->>eMMC HAL: CcspHalEmmcGetHealthInfo()
-eMMC HAL->>Vendor Software: 
-Vendor Software ->>eMMC HAL: 
-eMMC HAL->>Client Module: return
+participant Vendor
+Caller ->>eMMC HAL: CcspHalEmmcGetHealthInfo()
+eMMC HAL->>Vendor: 
+Vendor ->>eMMC HAL: 
+eMMC HAL->>Caller: return
 
-Client Module ->>eMMC HAL: CcspHalEmmcGetDeviceInfo()
-eMMC HAL->>Vendor Software: 
-Vendor Software ->>eMMC HAL: 
-eMMC HAL->>Client Module: return
+Caller ->>eMMC HAL: CcspHalEmmcGetDeviceInfo()
+eMMC HAL->>Vendor: 
+Vendor ->>eMMC HAL: 
+eMMC HAL->>Caller: return
 ```
