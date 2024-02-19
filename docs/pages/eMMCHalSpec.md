@@ -8,8 +8,12 @@
 
 ## Description
 The diagram below describes a high-level software architecture of the eMMC HAL module stack.
-
-![eMMC HAL Architecture Diag](images/eMMC_HAL_Architecture.png)
+```mermaid
+flowchart
+    Caller <--> HALIF[HAL Interface - ccsp_hal_emmc.h\n`HAL IF Specifcation / Contract Requirement`]
+    HALIF <--> VendorWrapper[HAL test_ccsp_hal_emmc.c\nVendor Implementation]
+    VendorWrapper <--> VendorDrivers[Vendor Drivers\nImplementation]
+```
 
 eMMC HAL is an abstraction layer, implemented to interact with linux device drivers of eMMC for getting health and device informations. This HAL layer is intended to be a common HAL,should be usable by any Ccspcomponents or Processes.
 
