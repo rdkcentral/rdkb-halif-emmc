@@ -202,34 +202,30 @@ typedef struct _stmgr_CallBackData{
  * @{
  */
 
-/* CcspHalEmmcGetHealthInfo() function */
 /**
 * @brief Provides EMMC health information
-* @param[out] pHealthInfo - A pointer to an eSTMGRHealthInfo structure. This pointer is used to access and update the health information of a device.
+* @param[out] pHealthInfo - A pointer to a structure is used to access and update the health information of a device.
 *
-* @return The status of the operation.
-* @retval 0 on Success.
-* @retval -1 on Generic Failure.
-* @retval -2 on Initialization failure.
-* @retval -3 on Invalid Input.
-* @retval -4 on Unknown Failure.
-* @remark The caller of this function is responsible for allocating memory for the eSTMGRHealthInfo structure.
+* @returns eSTMGRReturns
+* @retval RDK_STMGR_RETURN_SUCCESS - on Success,
+* @retval RDK_STMGR_RETURN_GENERIC_FAILURE - Generic Failure.
+* @retval RDK_STMGR_RETURN_INIT_FAILURE - Initialization Failure.
+* @retval RDK_STMGR_RETURN_INVALID_INPUT - Invalid Input.
+* @retval RDK_STMGR_RETURN_UNKNOWN_FAILURE - Unknown Failure. 
 *
 */
 eSTMGRReturns CcspHalEmmcGetHealthInfo (eSTMGRHealthInfo* pHealthInfo);
 
-/* CcspHalEmmcGetDeviceInfo() function */
 /**
 * @brief Provides EMMC Device information
-* @param[out] pDeviceInfo - A Pointer to eSTMGRDeviceInfo structure that needs to be updated.
+* @param[out] pDeviceInfo - A pointer to a structure, the function will then update this structure with the device information of the EMMC device.
 *
-* @return The status of the operation.
-* @retval 0 on Success.
-* @retval -1 on Generic Failure.
-* @retval -2 on Initialization failure.
-* @retval -3 on Invalid Input.
-* @retval -4 on Unknown Failure.
-* @remark The caller of this function is responsible for allocating memory for the eSTMGRDeviceInfo structure.
+* @returns eSTMGRReturns
+* @retval RDK_STMGR_RETURN_SUCCESS - on Success,
+* @retval RDK_STMGR_RETURN_GENERIC_FAILURE - Generic Failure.
+* @retval RDK_STMGR_RETURN_INIT_FAILURE - Initialization Failure.
+* @retval RDK_STMGR_RETURN_INVALID_INPUT - Invalid Input.
+* @retval RDK_STMGR_RETURN_UNKNOWN_FAILURE - Unknown Failure.
 *
 */
 eSTMGRReturns CcspHalEmmcGetDeviceInfo (eSTMGRDeviceInfo* pDeviceInfo);
