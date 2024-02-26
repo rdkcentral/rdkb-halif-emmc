@@ -46,9 +46,15 @@ All API's are expected to be called from multiple process.
 
 ## Memory Model
 
-eMMC HAL is responsible to allocate and deallocate memory for necessary API's to store information as specified in API Documentation.
+### Caller Responsibilities:
 
-Third-party vendors are required to allocate memory to meet their operational needs. In doing so, the vendor should also ensure they execute internal deallocation within their implementation.
+   1. Allocate and deallocate memory for parameters passed to specific functions, as outlined in the API 
+      documentation, to prevent memory leaks.
+
+### Module Responsibilities:
+
+   1. Manage and deallocate memory used for its internal operations.
+   2. Release all internally allocated memory upon closure to prevent memory leaks.
 
 TODO: State a footprint requirement. Example: This should not exceed XXXX KB.
 
@@ -97,7 +103,7 @@ Make sure eMMC HAL is not contributing more to memory and CPU utilization while 
 
 ## Quality Control
 
-To maintain software quality, it is recommended that the Firmware Management HAL implementation is verified without any errors using third-party tools such as `Coverity`, `Black Duck`, `Valgrind`, etc.
+To maintain software quality, it is recommended that the eMMC HAL implementation is verified without any errors using third-party tools such as `Coverity`, `Black Duck`, `Valgrind`, etc.
 
 ## Licensing
 
@@ -105,7 +111,7 @@ eMMC HAL implementation is expected to released under the Apache License 2.0
 
 ## Build Requirements
 
-eMMC HAL source code should be capable of being built under Linux Yocto environment and should be delivered as a static library `libhal_emmc`.
+eMMC HAL source code should be capable of being built under Linux Yocto environment and should be delivered as a static library `libhal_emmc.so`.
 
 ## Variability Management
 
