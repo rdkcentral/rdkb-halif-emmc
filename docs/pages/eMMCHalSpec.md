@@ -67,13 +67,10 @@ The eMMC HAL is not involved in any of the power management operation.
 There are no asynchronous notifications.
 
 ## Blocking calls
-Please see the blocking calls used in eMMC HAL which are static functions.
-     1. read_sysbytes(const char* regpath, uint8_t *reg, char* hexstr, int size)
-     2. read_extcsd(int fd, uint8_t *ext_csd)
-     3. read_devicereport(int fd, uint8_t *report)
-     4. read_status(int fd, uint32_t *response)
-     5. read_csd(int fd, uint8_t *csd)
-     6. read_cid(int fd, uint8_t *cid)
+
+The API's are expected to work synchronously and should complete within a time period commensurate with the complexity of the operation and in accordance with any relevant specification.
+
+Any calls that can fail due to the lack of a response should have a timeout period in accordance with any API documentation.
 
 ## Internal Error Handling
 
@@ -93,7 +90,7 @@ The component is should log all the error and critical informative messages whic
 
 The logging should be consistence across all HAL components.
 
-If the vendor is going to log then it has to be logged in `xxx_vendor_hal.log` file name.
+If the vendor is going to log then it has to be logged in `emmc_vendor_hal.log` file name.
 
 Logging should be defined with log levels as per Linux standard logging.
 
