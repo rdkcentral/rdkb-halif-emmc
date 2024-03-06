@@ -7,11 +7,14 @@
 - `OEM` \- Original Equipment Manufacture
 
 ## Description
+
 The diagram below describes a high-level software architecture of the eMMC HAL module stack.
+
 ```mermaid
+
 flowchart
     Caller <--> HALIF[HAL Interface - ccsp_hal_emmc.h\n`HAL IF Specifcation / Contract Requirement`]
-    HALIF <--> VendorWrapper[HAL test_ccsp_hal_emmc.c\nVendor Implementation]
+    HALIF <--> VendorWrapper[HAL\nVendor Implementation]
     VendorWrapper <--> VendorDrivers[Vendor Drivers\nImplementation]
 ```
 
@@ -46,12 +49,11 @@ All API's are expected to be called from multiple process.
 
 ## Memory Model
 
-### Caller Responsibilities:
+### Caller Responsibilities
 
-   1. Allocate and deallocate memory for parameters passed to specific functions, as outlined in the API 
-      documentation, to prevent memory leaks.
+   1. Allocate and deallocate memory for parameters passed to specific functions, as outlined in the API documentation, to prevent memory leaks.
 
-### Module Responsibilities:
+### Module Responsibilities
 
    1. Manage and deallocate memory used for its internal operations.
    2. Release all internally allocated memory upon closure to prevent memory leaks.
@@ -80,7 +82,7 @@ All HAL APIs are designed to return all errors synchronously as part of their re
 
 There is no requirement for HAL to persist any setting information. The caller is responsible to persist any settings related to their implementation.
 
-# Nonfunctional requirements
+## Nonfunctional requirements
 
 Following non functional requirement should be supported by the eMMC HAL component.
 
@@ -135,15 +137,15 @@ Covered as per "Description" sections in the API documentation.
 ```mermaid
 sequenceDiagram
 participant Caller
-participant eMMC HAL
-participant Vendor
-Caller ->>eMMC HAL: CcspHalEmmcGetHealthInfo()
-eMMC HAL->>Vendor: 
-Vendor ->>eMMC HAL: 
-eMMC HAL->>Caller: return
+participant eMMC HALIF Specification
+participant Vendor Wrapper
+Caller ->>eMMC HALIF Specification: CcspHalEmmcGetHealthInfo()
+eMMC HALIF Specification->>Vendor Wrapper: 
+Vendor Wrapper->>eMMC HALIF Specification: 
+eMMC HALIF Specification->>Caller: return
 
-Caller ->>eMMC HAL: CcspHalEmmcGetDeviceInfo()
-eMMC HAL->>Vendor: 
-Vendor ->>eMMC HAL: 
-eMMC HAL->>Caller: return
+Caller ->>eMMC HALIF Specification: CcspHalEmmcGetDeviceInfo()
+eMMC HALIF Specification->>Vendor Wrapper: 
+Vendor Wrapper ->>eMMC HALIF Specification: 
+eMMC HALIF Specification->>Caller: return
 ```
